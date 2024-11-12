@@ -9,8 +9,22 @@ $(function () {
     function generateRow(obj) {
         let row = `
         <tr>
-        <td>${obj.id}</td>
+            <td>${obj.id}</td>
             <td>${obj.email}</td>
+            <td>${obj.phone}</td>
+            <td>${obj.password}</td>
+            <td>${obj.null}</td>
+            <td>${obj.birthDay}</td>
+            <td>${obj.question1}</td>
+            <td>${obj.answer1}</td>
+            <td>${obj.question2}</td>
+            <td>${obj.answer2}</td>
+            <td>${obj.question3}</td>
+            <td>${obj.answer3}</td>
+            <td>${obj.null}</td>
+            <td>${obj.null}</td>
+            <td>${obj.null}</td>
+            <td>${obj.null}</td>
         </tr>`
 
         return row;

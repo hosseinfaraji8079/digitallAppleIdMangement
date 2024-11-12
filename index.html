@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="./assets/fonts/feather-font/css/iconfont.css">
     <link rel="stylesheet" href="./assets/vendors/flag-icon-css/css/flag-icon.min.css">
     <link rel="stylesheet" href="./assets/css/demo2/style-rtl.min.css">
+    <link rel="stylesheet" href="./assets/vendors/jquery-tags-input/jquery.tagsinput.min.css">
+    <link rel="stylesheet" href="./assets/vendors/pickr/themes/classic.min.css">
     <link rel="stylesheet" href="./assets/vendors/flatpickr/flatpickr.min.css">
     <!-- <link rel="shortcut icon" href="./assets/images/favicon.png" /> -->
 </head>
@@ -26,7 +28,7 @@
         <nav class="sidebar">
             <div class="sidebar-header">
                 <a href="#" class="sidebar-brand">
-                    Noble<span>UI</span>
+                    Apple<span>Id</span>
                 </a>
                 <div class="sidebar-toggler not-active">
                     <span></span>
@@ -337,14 +339,13 @@
                         <div class="card">
                             <div class="card-body">
                                 <h6 class="card-title">ثبت اپل ایدی جدید</h6>
-                                <form id="add-apple-id-form">
+                                <form id="add-apple-id-form" novalidate="novalidate">
                                     <div class="row">
                                         <div class="col">
                                             <div class="mb-3">
                                                 <label for="appleIdTypeId" class="form-label">نوع اپل آیدی</label>
                                                 <select class="form-select form-select" id="appleIdTypeId">
                                                     <option selected="">لطفا یه آیتم را انتخاب کنید</option>
-
                                                 </select>
                                             </div>
                                         </div>
@@ -353,7 +354,7 @@
                                         <div class="col">
                                             <div class="mb-3">
                                                 <label for="phone" class="form-label">شماره</label>
-                                                <input type="text" class="form-control"
+                                                <input name="phone" type="text" class="form-control"
                                                     placeholder="شماره اپل آیدی را وارد کنید" id="phone">
                                             </div>
                                         </div>
@@ -381,7 +382,7 @@
                                         <div class="col">
                                             <div class="mb-3">
                                                 <label for="email" class="form-label">ایمیل</label>
-                                                <input type="email" class="form-control"
+                                                <input name="email" type="text" class="form-control"
                                                     placeholder="ایمیل اپل آیدی را وارد کنید" id="email">
                                             </div>
                                         </div><!-- Col -->
@@ -390,14 +391,14 @@
                                         <div class="col-sm-6">
                                             <div class="mb-3">
                                                 <label for="password" class="form-label">کلمه عبور</label>
-                                                <input type="password" class="form-control"
+                                                <input name="password" type="password" class="form-control"
                                                     placeholder="لطفا کلمه عبور را وارد کنید" id="password">
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="mb-3">
                                                 <label for="comparePassword" class="form-label">تکرار کلمه عبور</label>
-                                                <input type="password" class="form-control"
+                                                <input name="comparePassword" type="password" class="form-control"
                                                     placeholder="لطفا کلمه عبور را وارد کنید" id="comparePassword">
                                             </div>
                                         </div>
@@ -506,7 +507,6 @@
                                                 <th>ایمیل</th>
                                                 <th>شماره</th>
                                                 <th>کلمه عبور</th>
-                                                <th>تاریخ شروع</th>
                                                 <th>وضعیت</th>
                                                 <th>تاریخ تولد</th>
                                                 <th>سوال 1</th>
@@ -544,7 +544,14 @@
     <script src="./assets/vendors/core/core.js"></script>
     <script src="./assets/vendors/feather-icons/feather.min.js"></script>
     <script src="./assets/js/template.js"></script>
-    <script src="./assets/js/page/appleId.js"></script>
+    <script src="./assets/vendors/jquery-validation/jquery.validate.min.js"></script>
+    <script src="./assets/vendors/inputmask/jquery.inputmask.min.js"></script>
+    <script src="./assets/vendors/jquery-tags-input/jquery.tagsinput.min.js"></script>
+    <script src="./assets/js/form-validation.js"></script>
+    <!-- <script src="./assets/js/page/appleId.js"></script> -->
+    <script src="./assets/vendors/pickr/pickr.min.js"></script>
+    <script src="./assets/vendors/flatpickr/flatpickr.min.js"></script>
+
 </body>
 
 </html>

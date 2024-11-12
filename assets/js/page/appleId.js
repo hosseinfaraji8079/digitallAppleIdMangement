@@ -1,10 +1,20 @@
+import * as digitall from "../base-digitall.js";
 
-$(function () {
+
+$(async function () {
     'use strict';
 
-    const baseApiRequest = "https://test.samanii.com/api/v1";
-    const token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0MCIsIkJyYW5kSWQiOiIxMDAwMDEiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiIiLCJDaGF0SWQiOiIxMjQ2MjExMzA1IiwiZXhwIjoxNzMxMzUwMzc2LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo1MDAxIiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NTAwMSJ9.bFX0KHYnPL8OFLG7mb0wp4KyfHdHXWQLZvoiNup3wGQ"
+    // const baseApiRequest = "https://test.samanii.com/api/v1";
+    // const token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0MCIsIkJyYW5kSWQiOiIxMDAwMDEiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiIiLCJDaGF0SWQiOiIxMjQ2MjExMzA1IiwiZXhwIjoxNzMxMzUwMzc2LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo1MDAxIiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NTAwMSJ9.bFX0KHYnPL8OFLG7mb0wp4KyfHdHXWQLZvoiNup3wGQ"
 
+    const getFilterAppleIdUrl = digitall.baseApiRequest + "/Apple/FilterAppleId";
+    const addAppleIdUrl = digitall.baseApiRequest + "/Apple/AddAppleId";
+    const getAppleIdType = digitall.baseApiRequest + "/Apple/GetAppleIdType";
+    const appleIdTypeId = $("#appleIdTypeId");
+    const appleIdForm = $("#add-apple-id-form");
+
+
+    const table_body = $("#appleIdTable > tbody");
 
     function generateRow(obj) {
         let row = `
@@ -21,64 +31,54 @@ $(function () {
             <td>${obj.answer2}</td>
             <td>${obj.question3}</td>
             <td>${obj.answer3}</td>
-            <td>${obj.null}</td>
-            <td>${obj.null}</td>
-            <td>${obj.null}</td>
-            <td>${obj.null}</td>
+            <td>${obj.createDate}</td>
+            <td>${obj.modifiedDate}</td>
+            <td>${obj.createBy ?? "-"}</td>
+            <td>${obj.modifyBy ?? "-"}</td>
         </tr>`
 
         return row;
     }
 
-    const filterAppleId = async () => {
-        await $.ajax({
-            type: "GET",
-            url: `${baseApiRequest}/Apple/FilterAppleId`,
-            headers: {
-                'Authorization': token,
-                'Content-Type': 'application/json'
-            },
-            success: async function (response) {
-                if (response.statusCode != 0 | response.isSuccess == false) {
-
-                } else {
-                    let table_body = $("#appleIdTable > tbody");
-
-                    await $.each(response.data.entities, function (index, value) {
-                        $(table_body).append(generateRow(value));
-                    });
-                }
-            }, erorr: function (erorr) {
-
-            }
+    const fixedOption = async () => {
+        await digitall.getDigitallApi(getAppleIdType).then(async result => {
+            // appleIdTypeId.html("");
+            result.data.forEach(type => {
+                appleIdTypeId.append(`<option value="${type.id}">${type.title}</option>`);
+            });
         });
     }
 
+    const filterAppleId = async () => {
+        await digitall.getDigitallApi(getFilterAppleIdUrl).then(async result => {
+            $(table_body).html("");
+            await $.each(result.data.entities, function (index, value) {
+                $(table_body).append(generateRow(value));
+            });
+        });
+    }
+
+    await appleIdForm.submit(async function (e) {
+        e.preventDefault();
+
+        let values = $("#add-apple-id-form input, #add-apple-id-form select");
+
+        let appleId = {}
+
+        values.each((key, value) => {
+            appleId[value.id] = value.value;
+        });
+
+        await digitall.postDigitallApi(addAppleIdUrl, appleId);
+    });
 
     $(async function () {
 
-
+        // console.log(appleIdItems);
         filterAppleId();
+        fixedOption();
 
-        await $.ajax({
-            type: "GET",
-            url: `${baseApiRequest}/Apple/GetAppleIdType`,
-            headers: {
-                'Authorization': token,
-                'Content-Type': 'application/json'
-            },
-            success: function (response) {
-                if (response.statusCode != 0 | response.isSuccess == false) {
-                } else {
-                    const appleIdTypeId = $("#appleIdTypeId");
-                    response.data.forEach(type => {
-                        $(appleIdTypeId).append(`<option value="${type.id}">${type.title}</option>`);
-                    });
-                }
-            }, erorr: function (erorr) {
-
-            }
-        });
+        // await digitall.postDigitallApi()
 
         $.getScript("/assets/vendors/datatables.net/jquery.dataTables.js", function (data, textStatus, jqxhr) {
             $.getScript("/assets/vendors/datatables.net-bs5/dataTables.bootstrap5.js", function (data, textStatus, jqxhr) {
@@ -112,41 +112,6 @@ $(function () {
                     dateFormat: "Y/m/d",
                 });
             }
-        });
-
-
-        await $("#add-apple-id-form").submit(async function (e) {
-            e.preventDefault();
-
-            let values = $("#add-apple-id-form input, #add-apple-id-form select");
-
-            let appleId = {}
-
-            values.each((key, value) => {
-                appleId[value.id] = value.value;
-            });
-
-            await $.ajax({
-                type: "POST",
-                url: `${baseApiRequest}/Apple/AddAppleId`,
-                headers: {
-                    'Authorization': token,
-                    'Content-Type': 'application/json'
-                },
-                data: JSON.stringify(appleId),
-                success: function (response) {
-                    if (response.statusCode != 0 | response.isSuccess == false) {
-
-                    } else {
-                        const appleIdTypeId = $("#appleIdTypeId");
-                        response.data.forEach(type => {
-                            $(appleIdTypeId).append(`<option value="${type.id}">${type.title}</option>`);
-                        });
-                    }
-                }, erorr: function (erorr) {
-
-                }
-            });
         });
 
     });

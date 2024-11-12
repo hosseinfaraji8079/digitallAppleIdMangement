@@ -9,7 +9,6 @@ $(function () {
   });
 
   $(function () {
-    debugger;
     // validate signup form on keyup and submit
     $("#add-apple-id-form").validate({
       rules: {
